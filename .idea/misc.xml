@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.107421875" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/drawable/button_shape.xml" value="0.1359375" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/drawable/correct_button.xml" value="0.107421875" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/drawable/datepicker_dialog.xml" value="0.199609375" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/drawable/expand_button.xml" value="0.199609375" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/drawable/submit_button.xml" value="0.107421875" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/drawable/timepicker_divider_line.xml" value="0.107421875" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/drawable/wheel_bg.xml" value="0.107421875" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/drawable/wrong_button.xml" value="0.107421875" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/activity_doing_test.xml" value="0.11614583333333334" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/activity_main.xml" value="0.11614583333333334" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/activity_test_circle_wheelview.xml" value="0.1" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/card_choice.xml" value="0.21014492753623187" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/datepicker_dialog.xml" value="0.1875" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/dialog_date.xml" value="0.6" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/dialog_note_picker.xml" value="0.2" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/dialog_picker.xml" value="0.2" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/dialog_range_picker.xml" value="0.1" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/dialog_setting.xml" value="0.16" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/fragment_answer_dialog.xml" value="0.1" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/fragment_e_t_interval.xml" value="0.12708333333333333" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/fragment_note_picker_dialog.xml" value="0.1" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/fragment_setting.xml" value="0.28125" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/layout_date.xml" value="0.536" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/layout_time.xml" value="0.264" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/list_item_setting.xml" value="0.264" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/timepicker_layout.xml" value="0.264" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/timepicker_line.xml" value="0.1" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/timepicker_toolbar.xml" value="0.4" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectResources">
+    <resource url="http://www.musicxml.org/dtds/partwise.dtd" location="$PROJECT_DIR$/libs/musicxml-4.0/schema/partwise.dtd" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
