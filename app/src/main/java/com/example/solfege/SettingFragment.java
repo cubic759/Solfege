@@ -38,7 +38,9 @@ public class SettingFragment extends Fragment {
         View settingView = inflater.inflate(R.layout.fragment_setting, container, false);
         //Add setting controls
         listView = settingView.findViewById(R.id.settingList);
-        listView.setNestedScrollingEnabled(true);
+        if (android.os.Build.VERSION.SDK_INT <= 27) {
+            listView.setNestedScrollingEnabled(true);
+        }
         settingControls = new SettingControls(testType, testMode, settings, this, listView);
         settingControls.create();
         return settingView;

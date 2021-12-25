@@ -16,18 +16,18 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
 
-import com.example.solfege.constants.Chords;
-import com.example.solfege.utils.NoteRangePickerDialog;
 import com.example.solfege.R;
 import com.example.solfege.SettingFragment;
 import com.example.solfege.adapters.MyListAdapter;
 import com.example.solfege.adapters.OnSeekBarChangeListenerAdapter;
-import com.example.solfege.constants.Durations;
-import com.example.solfege.constants.Intervals;
+import com.example.solfege.constants.Chord;
+import com.example.solfege.constants.Duration;
+import com.example.solfege.constants.Interval;
 import com.example.solfege.constants.Mode;
-import com.example.solfege.constants.Scales;
+import com.example.solfege.constants.Scale;
 import com.example.solfege.constants.Type;
 import com.example.solfege.external.multiselectspinner.MultiSelectSpinner;
+import com.example.solfege.utils.NoteRangePickerDialog;
 import com.example.solfege.utils.TimeSignaturePickerDialog;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -314,7 +314,7 @@ class SSRhythmSC {
         durationSpinner.setTitle(context.getString(R.string.chooseDuration));
         durationSpinner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         durationSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Durations.getDurations(context))));
+                Arrays.asList(Duration.getDurations(context))));
 
         RadioButton oneBar = new RadioButton(context);
         RadioButton twoBars = new RadioButton(context);
@@ -330,7 +330,7 @@ class SSRhythmSC {
         Button button = new Button(context);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setText(R.string.chooseTimeSignature);
-        timeSignaturePicker = new TimeSignaturePickerDialog(timeSignatureText, initialSettings, context.getString(R.string.chooseTimeSignature));
+        timeSignaturePicker = new TimeSignaturePickerDialog(timeSignatureText, initialSettings, context.getString(R.string.timeSignature));
         button.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - lastClickTime < 1500) {
                 return;
@@ -349,7 +349,7 @@ class SSRhythmSC {
 
     void getSettings() {
         if (!durationSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
-            settings.setDurations(durationSpinner.getSelected());
+            settings.setTempDurations(durationSpinner.getSelected());
             settings.setEmptyDurations(false);
         } else {
             settings.setEmptyDurations(true);
@@ -411,7 +411,7 @@ class SSIntervalSC {
         multiSelectSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
         multiSelectSpinner.setTitle(context.getString(R.string.chooseInterval));
         multiSelectSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Intervals.getIntervals(context))));//setSelections
+                Arrays.asList(Interval.getIntervals(context))));//setSelections
 
         RadioButton ascendButton = new RadioButton(context);
         ascendButton.setText(R.string.ascending);
@@ -434,7 +434,7 @@ class SSIntervalSC {
         Button button = new Button(context);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setText(R.string.chooseRange);
-        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.chooseRange));
+        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.noteRange));
         button.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
                 return;
@@ -454,11 +454,12 @@ class SSIntervalSC {
     void getSettings() {
         if (!multiSelectSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
             settings.setIntervals(multiSelectSpinner.getSelected());
+            settings.setEmptyIntervals(false);
         } else {
             settings.setEmptyIntervals(true);
         }
         settings.setPlayMode(group.indexOfChild(group.findViewById(group.getCheckedRadioButtonId())));
-        initialSettings.setNoteRange(pickerDialog.getRange());
+        initialSettings.setNoteRangeTemp(pickerDialog.getRange());
     }
 
     void setSettings() {
@@ -516,7 +517,7 @@ class SSScaleSC {
         multiSelectSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
         multiSelectSpinner.setTitle(context.getString(R.string.chooseScale));
         multiSelectSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Scales.getScales(context))));//setSelections
+                Arrays.asList(Scale.getScales(context))));//setSelections
 
         RadioButton ascendButton = new RadioButton(context);
         ascendButton.setText(R.string.ascending);
@@ -533,7 +534,7 @@ class SSScaleSC {
         Button button = new Button(context);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setText(R.string.chooseRange);
-        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.chooseRange));
+        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.noteRange));
         button.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
                 return;
@@ -553,19 +554,20 @@ class SSScaleSC {
     void getSettings() {
         if (!multiSelectSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
             settings.setScales(multiSelectSpinner.getSelected());
+            settings.setEmptyScales(false);
         } else {
             settings.setEmptyScales(true);
         }
         settings.setPlayMode(group.indexOfChild(group.findViewById(group.getCheckedRadioButtonId())));
-        initialSettings.setNoteRange(pickerDialog.getRange());
+        initialSettings.setNoteRangeTemp(pickerDialog.getRange());
     }
 
     void setSettings() {
         if (initialSettings.isUninitiated()) {
             multiSelectSpinner.selectItem(0);
             multiSelectSpinner.selectItem(1);
-            multiSelectSpinner.selectItem(4);
-            multiSelectSpinner.selectItem(5);
+            multiSelectSpinner.selectItem(6);
+            multiSelectSpinner.selectItem(7);
             group.clearCheck();
             ((RadioButton) group.getChildAt(0)).setChecked(true);
             noteRangeText.setText(String.format(context.getString(R.string.fromTo), "A₂", "c⁵"));
@@ -613,7 +615,7 @@ class SSArpeggioSC {
         multiSelectSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
         multiSelectSpinner.setTitle(context.getString(R.string.chooseChord));
         multiSelectSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Chords.getChords(context))));//setSelections
+                Arrays.asList(Chord.getChords(context))));//setSelections
 
         RadioButton ascendButton = new RadioButton(context);
         ascendButton.setText(R.string.ascending);
@@ -630,7 +632,7 @@ class SSArpeggioSC {
         Button button = new Button(context);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setText(R.string.chooseRange);
-        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.chooseRange));
+        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.noteRange));
         button.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
                 return;
@@ -650,11 +652,12 @@ class SSArpeggioSC {
     void getSettings() {
         if (!multiSelectSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
             settings.setChords(multiSelectSpinner.getSelected());
+            settings.setEmptyChords(false);
         } else {
             settings.setEmptyChords(true);
         }
         settings.setPlayMode(group.indexOfChild(group.findViewById(group.getCheckedRadioButtonId())));
-        initialSettings.setNoteRange(pickerDialog.getRange());
+        initialSettings.setNoteRangeTemp(pickerDialog.getRange());
     }
 
     void setSettings() {
@@ -692,7 +695,7 @@ class SSMelodySC {
     private final Settings initialSettings;
     private final SSMelodySettings settings;
     private final List<SettingItem> list;
-    private final long[] lastClickTime = new long[2];
+    private long lastClickTime;
     private FlowRadioGroup group;
     private MultiSelectSpinner durationSpinner;
     private MultiSelectSpinner scaleSpinner;
@@ -714,13 +717,13 @@ class SSMelodySC {
         scaleSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
         scaleSpinner.setTitle(context.getString(R.string.chooseScale));
         scaleSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Scales.getScales(context))));//setSelections
+                Arrays.asList(Scale.getScales(context))));//setSelections
 
         durationSpinner = new MultiSelectSpinner(context);
         durationSpinner.setTitle(context.getString(R.string.chooseDuration));
         durationSpinner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         durationSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Durations.getDurations(context))));
+                Arrays.asList(Duration.getDurations(context))));
 
         RadioButton oneBar = new RadioButton(context);
         RadioButton twoBars = new RadioButton(context);
@@ -736,12 +739,12 @@ class SSMelodySC {
         Button button = new Button(context);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setText(R.string.chooseRange);
-        noteRangePicker = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.chooseRange));
+        noteRangePicker = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.noteRange));
         button.setOnClickListener(v -> {
-            if (SystemClock.elapsedRealtime() - lastClickTime[0] < 1500) {
+            if (SystemClock.elapsedRealtime() - lastClickTime < 1500) {
                 return;
             }
-            lastClickTime[0] = SystemClock.elapsedRealtime();
+            lastClickTime = SystemClock.elapsedRealtime();
             noteRangePicker.show(settingFragment.getChildFragmentManager(), "Choose range");
         });
         LinearLayout layout = new LinearLayout(context);
@@ -754,12 +757,12 @@ class SSMelodySC {
         Button button1 = new Button(context);
         button1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button1.setText(R.string.chooseTimeSignature);
-        timeSignaturePicker = new TimeSignaturePickerDialog(timeSignatureText, initialSettings, context.getString(R.string.chooseTimeSignature));
+        timeSignaturePicker = new TimeSignaturePickerDialog(timeSignatureText, initialSettings, context.getString(R.string.timeSignature));
         button1.setOnClickListener(v -> {
-            if (SystemClock.elapsedRealtime() - lastClickTime[1] < 1500) {
+            if (SystemClock.elapsedRealtime() - lastClickTime < 1500) {
                 return;
             }
-            lastClickTime[1] = SystemClock.elapsedRealtime();
+            lastClickTime = SystemClock.elapsedRealtime();
             timeSignaturePicker.show(settingFragment.getChildFragmentManager(), "Choose time signature");
         });
         LinearLayout layout1 = new LinearLayout(context);
@@ -775,19 +778,20 @@ class SSMelodySC {
 
     void getSettings() {
         if (!durationSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
-            settings.setDurations(durationSpinner.getSelected());
+            settings.setTempDurations(durationSpinner.getSelected());
             settings.setEmptyDurations(false);
         } else {
             settings.setEmptyDurations(true);
         }
         if (!scaleSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
             settings.setScales(scaleSpinner.getSelected());
+            settings.setEmptyScales(false);
         } else {
             settings.setEmptyScales(true);
         }
         settings.setBars(group.indexOfChild(group.findViewById(group.getCheckedRadioButtonId())) + 1);
         initialSettings.setTimeSignature(timeSignaturePicker.getTimeSignature());
-        initialSettings.setNoteRange(noteRangePicker.getRange());
+        initialSettings.setNoteRangeTemp(noteRangePicker.getRange());
     }
 
     void setSettings() {
@@ -800,8 +804,8 @@ class SSMelodySC {
             timeSignaturePicker.setTimeSignature(new int[]{2, 0});
             scaleSpinner.selectItem(0);
             scaleSpinner.selectItem(1);
-            scaleSpinner.selectItem(4);
-            scaleSpinner.selectItem(5);
+            scaleSpinner.selectItem(6);
+            scaleSpinner.selectItem(7);
             noteRangeText.setText(String.format(context.getString(R.string.fromTo), "A₂", "c⁵"));
             noteRangePicker.setRange(new int[]{87, 0});
         } else {
@@ -858,7 +862,7 @@ class SSChordSC {
         multiSelectSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
         multiSelectSpinner.setTitle(context.getString(R.string.chooseChord));
         multiSelectSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Chords.getChords(context))));//setSelections
+                Arrays.asList(Chord.getChords(context))));//setSelections
 
         noteRangeText = new TextView(context);
         noteRangeText.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
@@ -866,7 +870,7 @@ class SSChordSC {
         Button button = new Button(context);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setText(R.string.chooseRange);
-        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.chooseRange));
+        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.noteRange));
         button.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
                 return;
@@ -885,10 +889,11 @@ class SSChordSC {
     void getSettings() {
         if (!multiSelectSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
             settings.setChords(multiSelectSpinner.getSelected());
+            settings.setEmptyChords(false);
         } else {
             settings.setEmptyChords(true);
         }
-        initialSettings.setNoteRange(pickerDialog.getRange());
+        initialSettings.setNoteRangeTemp(pickerDialog.getRange());
     }
 
     void setSettings() {
@@ -941,11 +946,11 @@ class SSProgressionSC {
         scaleSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
         scaleSpinner.setTitle(context.getString(R.string.chooseScale));
         scaleSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Scales.getProgressionScales(context))));//setSelections
+                Arrays.asList(Scale.getProgressionScales(context))));//setSelections
         chordTypeSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
         chordTypeSpinner.setTitle(context.getString(R.string.chooseChordType));
         chordTypeSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Chords.getChordTypes(context))));//setSelections
+                Arrays.asList(Chord.getChordTypes(context))));//setSelections
 
         noteRangeText = new TextView(context);
         noteRangeText.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
@@ -953,7 +958,7 @@ class SSProgressionSC {
         Button button = new Button(context);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setText(R.string.chooseRange);
-        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.chooseRange));
+        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.noteRange));
         button.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
                 return;
@@ -965,7 +970,7 @@ class SSProgressionSC {
         layout.addView(noteRangeText);
         layout.addView(button);
 
-        list.add(new SettingItem(context.getString(R.string.scales),scaleSpinner));
+        list.add(new SettingItem(context.getString(R.string.scales), scaleSpinner));
         list.add(new SettingItem(context.getString(R.string.chordTypes), chordTypeSpinner));
         list.add(new SettingItem(context.getString(R.string.noteRange), layout));
     }
@@ -973,15 +978,17 @@ class SSProgressionSC {
     void getSettings() {
         if (!scaleSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
             settings.setScales(scaleSpinner.getSelected());
+            settings.setEmptyScales(false);
         } else {
             settings.setEmptyScales(true);
         }
         if (!chordTypeSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
             settings.setChordTypes(chordTypeSpinner.getSelected());
+            settings.setEmptyChordTypes(false);
         } else {
             settings.setEmptyChordTypes(true);
         }
-        initialSettings.setNoteRange(pickerDialog.getRange());
+        initialSettings.setNoteRangeTemp(pickerDialog.getRange());
     }
 
     void setSettings() {
@@ -1035,7 +1042,7 @@ class ETRhythmSC {
         durationSpinner.setTitle(context.getString(R.string.chooseDuration));
         durationSpinner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         durationSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Durations.getDurations(context))));
+                Arrays.asList(Duration.getDurations(context))));
 
         LinearLayout verticalLayout = new LinearLayout(context);
         verticalLayout.setOrientation(LinearLayout.VERTICAL);
@@ -1059,7 +1066,7 @@ class ETRhythmSC {
         Button button = new Button(context);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setText(R.string.chooseTimeSignature);
-        timeSignaturePicker = new TimeSignaturePickerDialog(timeSignatureText, initialSettings, context.getString(R.string.chooseTimeSignature));
+        timeSignaturePicker = new TimeSignaturePickerDialog(timeSignatureText, initialSettings, context.getString(R.string.timeSignature));
         button.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - lastClickTime < 1500) {
                 return;
@@ -1078,7 +1085,7 @@ class ETRhythmSC {
 
     void getSettings() {
         if (!durationSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
-            settings.setDurations(durationSpinner.getSelected());
+            settings.setTempDurations(durationSpinner.getSelected());
             settings.setEmptyDurations(false);
         } else {
             settings.setEmptyDurations(true);
@@ -1142,7 +1149,7 @@ class ETIntervalSC {
         multiSelectSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
         multiSelectSpinner.setTitle(context.getString(R.string.chooseInterval));
         multiSelectSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Intervals.getIntervals(context))));//setSelections
+                Arrays.asList(Interval.getIntervals(context))));//setSelections
 
         RadioButton ascendButton = new RadioButton(context);
         ascendButton.setText(R.string.ascending);
@@ -1167,7 +1174,7 @@ class ETIntervalSC {
         Button button = new Button(context);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setText(R.string.chooseRange);
-        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.chooseRange));
+        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.noteRange));
         button.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
                 return;
@@ -1191,11 +1198,12 @@ class ETIntervalSC {
     void getSettings() {
         if (!multiSelectSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
             settings.setIntervals(multiSelectSpinner.getSelected());
+            settings.setEmptyIntervals(false);
         } else {
             settings.setEmptyIntervals(true);
         }
         settings.setPlayMode(group.indexOfChild(group.findViewById(group.getCheckedRadioButtonId())));
-        initialSettings.setNoteRange(pickerDialog.getRange());
+        initialSettings.setNoteRangeTemp(pickerDialog.getRange());
         settings.setExpertMode(expertMode.isChecked());
     }
 
@@ -1256,7 +1264,7 @@ class ETScaleSC {
         multiSelectSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
         multiSelectSpinner.setTitle(context.getString(R.string.chooseScale));
         multiSelectSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Scales.getScales(context))));//setSelections
+                Arrays.asList(Scale.getScales(context))));//setSelections
 
         RadioButton ascendButton = new RadioButton(context);
         ascendButton.setText(R.string.ascending);
@@ -1273,7 +1281,7 @@ class ETScaleSC {
         Button button = new Button(context);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setText(R.string.chooseRange);
-        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.chooseRange));
+        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.noteRange));
         button.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
                 return;
@@ -1286,7 +1294,7 @@ class ETScaleSC {
         layout.addView(button);
 
         expertMode = new SwitchCompat(context);
-        expertMode.setText(R.string.answerRootNoteAlso);
+        expertMode.setText(R.string.answerScaleRootNoteAlso);
 
         list.add(new SettingItem(context.getString(R.string.scales), multiSelectSpinner));
         list.add(new SettingItem(context.getString(R.string.playMode), group));
@@ -1297,11 +1305,12 @@ class ETScaleSC {
     void getSettings() {
         if (!multiSelectSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
             settings.setScales(multiSelectSpinner.getSelected());
+            settings.setEmptyScales(false);
         } else {
             settings.setEmptyScales(true);
         }
         settings.setPlayMode(group.indexOfChild(group.findViewById(group.getCheckedRadioButtonId())));
-        initialSettings.setNoteRange(pickerDialog.getRange());
+        initialSettings.setNoteRangeTemp(pickerDialog.getRange());
         settings.setExpertMode(expertMode.isChecked());
     }
 
@@ -1309,8 +1318,8 @@ class ETScaleSC {
         if (initialSettings.isUninitiated()) {
             multiSelectSpinner.selectItem(0);
             multiSelectSpinner.selectItem(1);
-            multiSelectSpinner.selectItem(4);
-            multiSelectSpinner.selectItem(5);
+            multiSelectSpinner.selectItem(6);
+            multiSelectSpinner.selectItem(7);
             group.clearCheck();
             ((RadioButton) group.getChildAt(0)).setChecked(true);
             noteRangeText.setText(String.format(context.getString(R.string.fromTo), "A₂", "c⁵"));
@@ -1360,7 +1369,7 @@ class ETArpeggioSC {
         multiSelectSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
         multiSelectSpinner.setTitle(context.getString(R.string.chooseChord));
         multiSelectSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Chords.getChords(context))));//setSelections
+                Arrays.asList(Chord.getChords(context))));//setSelections
 
         RadioButton ascendButton = new RadioButton(context);
         ascendButton.setText(R.string.ascending);
@@ -1377,7 +1386,7 @@ class ETArpeggioSC {
         Button button = new Button(context);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setText(R.string.chooseRange);
-        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.chooseRange));
+        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.noteRange));
         button.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
                 return;
@@ -1390,7 +1399,7 @@ class ETArpeggioSC {
         layout.addView(button);
 
         expertMode = new SwitchCompat(context);
-        expertMode.setText(R.string.answerRootNoteAlso);
+        expertMode.setText(R.string.answerChordRootNoteAlso);
 
         list.add(new SettingItem(context.getString(R.string.chords), multiSelectSpinner));
         list.add(new SettingItem(context.getString(R.string.playMode), group));
@@ -1401,11 +1410,12 @@ class ETArpeggioSC {
     void getSettings() {
         if (!multiSelectSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
             settings.setChords(multiSelectSpinner.getSelected());
+            settings.setEmptyChords(false);
         } else {
             settings.setEmptyChords(true);
         }
         settings.setPlayMode(group.indexOfChild(group.findViewById(group.getCheckedRadioButtonId())));
-        initialSettings.setNoteRange(pickerDialog.getRange());
+        initialSettings.setNoteRangeTemp(pickerDialog.getRange());
         settings.setExpertMode(expertMode.isChecked());
     }
 
@@ -1445,7 +1455,7 @@ class ETMelodySC {
     private final Settings initialSettings;
     private final ETMelodySettings settings;
     private final List<SettingItem> list;
-    private final long[] lastClickTime = new long[2];
+    private long lastClickTime;
     private FlowRadioGroup group;
     private MultiSelectSpinner durationSpinner;
     private MultiSelectSpinner scaleSpinner;
@@ -1467,13 +1477,13 @@ class ETMelodySC {
         scaleSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
         scaleSpinner.setTitle(context.getString(R.string.chooseScale));
         scaleSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Scales.getScales(context))));//setSelections
+                Arrays.asList(Scale.getScales(context))));//setSelections
 
         durationSpinner = new MultiSelectSpinner(context);
         durationSpinner.setTitle(context.getString(R.string.chooseDuration));
         durationSpinner.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         durationSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Durations.getDurations(context))));
+                Arrays.asList(Duration.getDurations(context))));
 
         RadioButton oneBar = new RadioButton(context);
         RadioButton twoBars = new RadioButton(context);
@@ -1489,12 +1499,12 @@ class ETMelodySC {
         Button button = new Button(context);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setText(R.string.chooseRange);
-        noteRangePicker = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.chooseRange));
+        noteRangePicker = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.noteRange));
         button.setOnClickListener(v -> {
-            if (SystemClock.elapsedRealtime() - lastClickTime[0] < 1500) {
+            if (SystemClock.elapsedRealtime() - lastClickTime < 1500) {
                 return;
             }
-            lastClickTime[0] = SystemClock.elapsedRealtime();
+            lastClickTime = SystemClock.elapsedRealtime();
             noteRangePicker.show(settingFragment.getChildFragmentManager(), "Choose range");
         });
         LinearLayout layout = new LinearLayout(context);
@@ -1507,12 +1517,12 @@ class ETMelodySC {
         Button button1 = new Button(context);
         button1.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button1.setText(R.string.chooseTimeSignature);
-        timeSignaturePicker = new TimeSignaturePickerDialog(timeSignatureText, initialSettings, context.getString(R.string.chooseTimeSignature));
+        timeSignaturePicker = new TimeSignaturePickerDialog(timeSignatureText, initialSettings, context.getString(R.string.timeSignature));
         button1.setOnClickListener(v -> {
-            if (SystemClock.elapsedRealtime() - lastClickTime[1] < 1500) {
+            if (SystemClock.elapsedRealtime() - lastClickTime < 1500) {
                 return;
             }
-            lastClickTime[1] = SystemClock.elapsedRealtime();
+            lastClickTime = SystemClock.elapsedRealtime();
             timeSignaturePicker.show(settingFragment.getChildFragmentManager(), "Choose time signature");
         });
         LinearLayout layout1 = new LinearLayout(context);
@@ -1528,19 +1538,20 @@ class ETMelodySC {
 
     void getSettings() {
         if (!durationSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
-            settings.setDurations(durationSpinner.getSelected());
+            settings.setTempDurations(durationSpinner.getSelected());
             settings.setEmptyDurations(false);
         } else {
             settings.setEmptyDurations(true);
         }
         if (!scaleSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
             settings.setScales(scaleSpinner.getSelected());
+            settings.setEmptyScales(false);
         } else {
             settings.setEmptyScales(true);
         }
         settings.setBars(group.indexOfChild(group.findViewById(group.getCheckedRadioButtonId())) + 1);
         initialSettings.setTimeSignature(timeSignaturePicker.getTimeSignature());
-        initialSettings.setNoteRange(noteRangePicker.getRange());
+        initialSettings.setNoteRangeTemp(noteRangePicker.getRange());
     }
 
     void setSettings() {
@@ -1553,8 +1564,8 @@ class ETMelodySC {
             timeSignaturePicker.setTimeSignature(new int[]{2, 0});
             scaleSpinner.selectItem(0);
             scaleSpinner.selectItem(1);
-            scaleSpinner.selectItem(4);
-            scaleSpinner.selectItem(5);
+            scaleSpinner.selectItem(6);
+            scaleSpinner.selectItem(7);
             noteRangeText.setText(String.format(context.getString(R.string.fromTo), "A₂", "c⁵"));
             noteRangePicker.setRange(new int[]{87, 0});
         } else {
@@ -1597,6 +1608,7 @@ class ETChordSC {
     private NoteRangePickerDialog pickerDialog;
     private MultiSelectSpinner multiSelectSpinner;
     private TextView noteRangeText;
+    private SwitchCompat expertMode;
 
     ETChordSC(SettingFragment settingFragment, Settings settings, List<SettingItem> list) {
         this.settingFragment = settingFragment;
@@ -1611,7 +1623,7 @@ class ETChordSC {
         multiSelectSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
         multiSelectSpinner.setTitle(context.getString(R.string.chooseChord));
         multiSelectSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Chords.getChords(context))));//setSelections
+                Arrays.asList(Chord.getChords(context))));//setSelections
 
         noteRangeText = new TextView(context);
         noteRangeText.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
@@ -1619,7 +1631,7 @@ class ETChordSC {
         Button button = new Button(context);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setText(R.string.chooseRange);
-        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.chooseRange));
+        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.noteRange));
         button.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
                 return;
@@ -1631,17 +1643,23 @@ class ETChordSC {
         layout.addView(noteRangeText);
         layout.addView(button);
 
+        expertMode = new SwitchCompat(context);
+        expertMode.setText(R.string.answerChordRootNoteAlso);
+
         list.add(new SettingItem(context.getString(R.string.intervals), multiSelectSpinner));
         list.add(new SettingItem(context.getString(R.string.noteRange), layout));
+        list.add(new SettingItem(context.getString(R.string.expertMode), expertMode));
     }
 
     void getSettings() {
         if (!multiSelectSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
             settings.setChords(multiSelectSpinner.getSelected());
+            settings.setEmptyChords(false);
         } else {
             settings.setEmptyChords(true);
         }
-        initialSettings.setNoteRange(pickerDialog.getRange());
+        initialSettings.setNoteRangeTemp(pickerDialog.getRange());
+        settings.setExpertMode(expertMode.isChecked());
     }
 
     void setSettings() {
@@ -1658,6 +1676,7 @@ class ETChordSC {
             pickerDialog.setRange(initialSettings.getNoteRange());
             String[] rangeString = pickerDialog.getRangeString();
             noteRangeText.setText(String.format(context.getString(R.string.fromTo), rangeString[0], rangeString[1]));
+            expertMode.setChecked(settings.isExpertMode());
         }
     }
 
@@ -1677,7 +1696,9 @@ class ETProgressionSC {
     private final List<SettingItem> list;
     private long mLastClickTime = 0;
     private NoteRangePickerDialog pickerDialog;
-    private MultiSelectSpinner multiSelectSpinner;
+    private MultiSelectSpinner scaleSpinner;
+    private MultiSelectSpinner chordTypeSpinner;
+    private SwitchCompat expertMode;
     private TextView noteRangeText;
 
     ETProgressionSC(SettingFragment settingFragment, Settings settings, List<SettingItem> list) {
@@ -1690,10 +1711,14 @@ class ETProgressionSC {
     }
 
     void create() {
-        multiSelectSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
-        multiSelectSpinner.setTitle(context.getString(R.string.chooseChordType));
-        multiSelectSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
-                Arrays.asList(Chords.getChordTypes(context))));//setSelections
+        scaleSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
+        scaleSpinner.setTitle(context.getString(R.string.chooseScale));
+        scaleSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
+                Arrays.asList(Scale.getProgressionScales(context))));//setSelections
+        chordTypeSpinner = new MultiSelectSpinner(Objects.requireNonNull(context));
+        chordTypeSpinner.setTitle(context.getString(R.string.chooseChordType));
+        chordTypeSpinner.setListAdapter(new ArrayAdapter<>(context, android.R.layout.simple_list_item_multiple_choice,
+                Arrays.asList(Chord.getChordTypes(context))));//setSelections
 
         noteRangeText = new TextView(context);
         noteRangeText.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
@@ -1701,7 +1726,7 @@ class ETProgressionSC {
         Button button = new Button(context);
         button.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         button.setText(R.string.chooseRange);
-        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.chooseRange));
+        pickerDialog = new NoteRangePickerDialog(noteRangeText, initialSettings, context.getString(R.string.noteRange));
         button.setOnClickListener(v -> {
             if (SystemClock.elapsedRealtime() - mLastClickTime < 1500) {
                 return;
@@ -1713,30 +1738,47 @@ class ETProgressionSC {
         layout.addView(noteRangeText);
         layout.addView(button);
 
-        list.add(new SettingItem(context.getString(R.string.chordTypes), multiSelectSpinner));
+        expertMode = new SwitchCompat(context);
+        expertMode.setText(R.string.answerChordTypeAlso);
+
+        list.add(new SettingItem(context.getString(R.string.scales), scaleSpinner));
+        list.add(new SettingItem(context.getString(R.string.chordTypes), chordTypeSpinner));
         list.add(new SettingItem(context.getString(R.string.noteRange), layout));
+        list.add(new SettingItem(context.getString(R.string.expertMode), expertMode));
     }
 
     void getSettings() {
-        if (!multiSelectSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
-            settings.setChordTypes(multiSelectSpinner.getSelected());
+        if (!scaleSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
+            settings.setScales(scaleSpinner.getSelected());
+            settings.setEmptyScales(false);
+        } else {
+            settings.setEmptyScales(true);
+        }
+        if (!chordTypeSpinner.getSpinnerText().equals(context.getString(R.string.unselected))) {
+            settings.setChordTypes(chordTypeSpinner.getSelected());
+            settings.setEmptyChordTypes(false);
         } else {
             settings.setEmptyChordTypes(true);
         }
-        initialSettings.setNoteRange(pickerDialog.getRange());
+        initialSettings.setNoteRangeTemp(pickerDialog.getRange());
+        settings.setExpertMode(expertMode.isChecked());
     }
 
     void setSettings() {
         if (initialSettings.isUninitiated()) {
-            multiSelectSpinner.selectItem(0);
-            multiSelectSpinner.selectItem(2);
+            scaleSpinner.selectItem(0);
+            scaleSpinner.selectItem(1);
+            chordTypeSpinner.selectItem(0);
+            chordTypeSpinner.selectItem(2);
             noteRangeText.setText(String.format(context.getString(R.string.fromTo), "A₂", "c⁵"));
             pickerDialog.setRange(new int[]{87, 0});
         } else {
-            multiSelectSpinner.setSelect(settings.getChordTypes());
+            scaleSpinner.setSelect(settings.getScales());
+            chordTypeSpinner.setSelect(settings.getChordTypes());
             pickerDialog.setRange(initialSettings.getNoteRange());
             String[] rangeString = pickerDialog.getRangeString();
             noteRangeText.setText(String.format(context.getString(R.string.fromTo), rangeString[0], rangeString[1]));
+            expertMode.setChecked(settings.isExpertMode());
         }
     }
 

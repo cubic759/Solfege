@@ -2,27 +2,28 @@
 <resources>
     <declare-styleable name="pickerview">
         <attr name="wheelview_gravity">
-            <enum name="center" value="17"/>
-            <enum name="left" value="3"/>
-            <enum name="right" value="5"/>
+            <enum name="center" value="17" />
+            <enum name="left" value="3" />
+            <enum name="right" value="5" />
         </attr>
-        <attr name="wheelview_textSize" format="dimension"/>
-        <attr name="wheelview_textColorOut" format="color"/>
-        <attr name="wheelview_textColorCenter" format="color"/>
-        <attr name="wheelview_dividerColor" format="color"/>
-        <attr name="wheelview_dividerWidth" format="dimension"/>
-        <attr name="wheelview_lineSpacingMultiplier" format="float"/>
+        <attr name="wheelview_textSize" format="dimension" />
+        <attr name="wheelview_textColorOut" format="color" />
+        <attr name="wheelview_textColorCenter" format="color" />
+        <attr name="wheelview_dividerColor" format="color" />
+        <attr name="wheelview_dividerWidth" format="dimension" />
+        <attr name="wheelview_lineSpacingMultiplier" format="float" />
+        <attr name="wheelView_width_type" format="integer"/>
     </declare-styleable>
 
     <declare-styleable name="MultiSelectSpinner">
 
-        <attr name="choiceDialogTheme" format="reference"/>
-        <attr name="titleDividerDrawable" format="reference"/>
-        <attr name="titleDividerColor" format="color"/>
+        <attr name="choiceDialogTheme" format="reference" />
+        <attr name="titleDividerDrawable" format="reference" />
+        <attr name="titleDividerColor" format="color" />
 
     </declare-styleable>
     <!-- style reference -->
     <declare-styleable name="MultiSelectSpinnerTheme">
-        <attr name="multiSelectSpinnerStyle" format="reference"/>
+        <attr name="multiSelectSpinnerStyle" format="reference" />
     </declare-styleable>
 </resources>

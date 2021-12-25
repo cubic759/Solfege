@@ -30,10 +30,9 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class SettingDialogFragment extends BottomSheetDialogFragment {
-    private final Settings[] savedSettings;
+    private Settings[] savedSettings;
     private BottomSheetBehavior<FrameLayout> behavior;
     private DoingTestActivity activity;
     private Mode testMode;
@@ -42,7 +41,6 @@ public class SettingDialogFragment extends BottomSheetDialogFragment {
 
     //region Initialization
     public SettingDialogFragment() {
-        savedSettings = new Settings[2];
     }
 
     //Conductor: Get activity to access the context and layout.
@@ -56,7 +54,7 @@ public class SettingDialogFragment extends BottomSheetDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new BottomSheetDialog(Objects.requireNonNull(getContext()), R.style.SettingDialog);
+        return new BottomSheetDialog(requireContext(), R.style.SettingDialog);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -76,48 +74,23 @@ public class SettingDialogFragment extends BottomSheetDialogFragment {
         viewPager.setAdapter(contentAdapter);
         TabLayout tabLayout = settingDialogView.findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.addOnTabSelectedListener(new OnTabSelectedListenerAdapter() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                super.onTabSelected(tab);
-                if (tab.getPosition() == 0) {
-                    SettingFragment settingFragment = (SettingFragment) contentAdapter.getItem(0);
-                    ListView listView = settingFragment.getListView();
-                    if (listView != null) {
-                        listView.setNestedScrollingEnabled(true);
-                    }
-                    SettingFragment settingFragment1 = (SettingFragment) contentAdapter.getItem(1);
-                    ListView listView1 = settingFragment1.getListView();
-                    if (listView1 != null) {
-                        listView1.setNestedScrollingEnabled(false);
-                    }
-                } else {
-                    SettingFragment settingFragment = (SettingFragment) contentAdapter.getItem(1);
-                    ListView listView = settingFragment.getListView();
-                    if (listView != null) {
-                        listView.setNestedScrollingEnabled(true);
-                    }
-                    SettingFragment settingFragment1 = (SettingFragment) contentAdapter.getItem(0);
-                    ListView listView1 = settingFragment1.getListView();
-                    if (listView1 != null) {
-                        listView1.setNestedScrollingEnabled(false);
-                    }
-                }
-            }
-        });
+        tabLayout.addOnTabSelectedListener(new OnTabSelectedListenerAdapter(SSFragment, ETFragment) {
+        });//To set nestScrolling
 
         Button applyBtn = settingDialogView.findViewById(R.id.applyBtn);
         applyBtn.setOnClickListener(v -> {
+
             testMode = Mode.values()[tabLayout.getSelectedTabPosition()];
             savedSettings[0] = SSFragment.getSettings();
             savedSettings[1] = ETFragment.getSettings();
             Settings settings = (testMode == Mode.SIGHT_SINGING) ? savedSettings[0] : savedSettings[1];
             if (!settings.isValid()) {
-                new AlertDialog.Builder(activity).setPositiveButton(android.R.string.ok, null).setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle(R.string.invalidSelection).setMessage(R.string.alertInfo)
-                        .show();
+                showAlertDialog();
             } else {
                 settings.setUninitiated(false);
+                if (uiControls != null) {
+                    uiControls.destroyDialogs();
+                }
                 uiControls = new UIControls(testType, testMode, settings, activity);
                 uiControls.create();
                 dismiss();
@@ -134,10 +107,19 @@ public class SettingDialogFragment extends BottomSheetDialogFragment {
         FrameLayout bottomSheet = dialog.getDelegate().findViewById(R.id.design_bottom_sheet);
         if (bottomSheet != null) {
             CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomSheet.getLayoutParams();
-            layoutParams.height = SystemInfo.getHeight(Objects.requireNonNull(getContext()));//Set the max height.
+            layoutParams.height = SystemInfo.getHeight(requireContext());//Set the max height.
             behavior = BottomSheetBehavior.from(bottomSheet);
             behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);//Starts with collapsed status.
         }
+    }
+
+    private void showAlertDialog() {
+        new AlertDialog.Builder(activity)
+                .setPositiveButton(android.R.string.ok, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setTitle(R.string.invalidSelection)
+                .setMessage(R.string.alertInfo)
+                .show();
     }
 
     public UIControls getUiControls() {

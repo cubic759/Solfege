@@ -2,12 +2,6 @@ package com.example.solfege.utils;
 
 import android.app.Dialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.fragment.app.DialogFragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,20 +10,24 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.fragment.app.DialogFragment;
+
 import com.example.solfege.R;
 import com.example.solfege.adapters.MyWheelAdapter;
-import com.example.solfege.models.Settings;
-import com.example.solfege.constants.Notes;
+import com.example.solfege.constants.Note;
 import com.example.solfege.external.wheelview.view.WheelView;
+import com.example.solfege.models.Settings;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class NoteRangePickerDialog extends DialogFragment {
-    private final List<String> notesList = Arrays.asList(Notes.NOTES_LIST);
+    private final List<String> notesList = Arrays.asList(Note.NOTES_LIST);
     private BottomSheetBehavior<FrameLayout> behavior;
     private TextView setText;
     private Settings settings;
@@ -50,7 +48,7 @@ public class NoteRangePickerDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = new BottomSheetDialog(Objects.requireNonNull(getContext()), R.style.SettingDialog);
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext(), R.style.SettingDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);//Cannot drag
         return dialog;
     }
@@ -106,8 +104,8 @@ public class NoteRangePickerDialog extends DialogFragment {
     public String[] getRangeString() {
         String[] rangeString = new String[2];
         if (lowestPicker == null || highestPicker == null) {
-            rangeString[0] = Notes.NOTES_LIST[range[0]];
-            rangeString[1] = Notes.NOTES_LIST[range[1]];
+            rangeString[0] = Note.NOTES_LIST[range[0]];
+            rangeString[1] = Note.NOTES_LIST[range[1]];
         } else {
             rangeString[0] = (String) lowestPicker.getAdapter().getItem(lowestPicker.getCurrentItem());
             rangeString[1] = (String) highestPicker.getAdapter().getItem(highestPicker.getCurrentItem());
@@ -124,7 +122,7 @@ public class NoteRangePickerDialog extends DialogFragment {
     }
 
     private void initiateChooseRangePickers() {
-        lowestPicker.setAdapter(MyWheelAdapter.getAdapter(notesList.subList(range[1], Notes.NOTES_LIST_LENGTH)));
+        lowestPicker.setAdapter(MyWheelAdapter.getAdapter(notesList.subList(range[1], Note.NOTES_LIST_LENGTH)));
         lowestPicker.setCyclic(false);
         lowestPicker.setCurrentItem(range[0] - range[1]);//87-range[1]
 
@@ -135,7 +133,7 @@ public class NoteRangePickerDialog extends DialogFragment {
 
         lowestPicker.setOnItemSelectedListener(i -> {
             int highCurrent = highestPicker.getCurrentItem();
-            if (i + highCurrent < Notes.NOTES_LIST_LENGTH) {//Exclude extreme situations
+            if (i + highCurrent < Note.NOTES_LIST_LENGTH) {//Exclude extreme situations
                 highestPicker.setAdapter(MyWheelAdapter.getAdapter(notesList.subList(0, i + highCurrent + 1)));//(<=x) +1
                 highestPicker.setCurrentItem(highCurrent);
             }
@@ -143,7 +141,7 @@ public class NoteRangePickerDialog extends DialogFragment {
 
         highestPicker.setOnItemSelectedListener(i -> {
             int lowCurrent = lowestPicker.getCurrentItem();
-            lowestPicker.setAdapter(MyWheelAdapter.getAdapter(notesList.subList(i, Notes.NOTES_LIST_LENGTH)));
+            lowestPicker.setAdapter(MyWheelAdapter.getAdapter(notesList.subList(i, Note.NOTES_LIST_LENGTH)));
             lowestPicker.setCurrentItem(lowCurrent + (highestPrevious - i));
             highestPrevious = i;
         });
@@ -158,7 +156,7 @@ public class NoteRangePickerDialog extends DialogFragment {
         boolean lowOK = false, highOK = false;
         int highest = highestPicker.getCurrentItem();
         int lowest = lowestPicker.getCurrentItem() + highest;
-        for (int i = 0; i < Notes.NOTES_LIST_LENGTH; i++) {
+        for (int i = 0; i < Note.NOTES_LIST_LENGTH; i++) {
             if (!highOK && highest == i) {
                 highOK = true;
                 range[1] = i;

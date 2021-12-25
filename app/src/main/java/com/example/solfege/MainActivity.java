@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.solfege.adapters.MyRecyclerAdapter;
-import com.example.solfege.constants.Languages;
+import com.example.solfege.constants.Language;
 import com.example.solfege.constants.Type;
 import com.example.solfege.models.LanguageManager;
 
@@ -37,6 +37,8 @@ import java.util.Arrays;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    int languageClickedItem = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,8 +68,10 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(R.string.language);
             builder.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice,
-                    Arrays.asList(Languages.getLanguages(this))), null);
+                    Arrays.asList(Language.getLanguages(this))), null);
+
             builder.setPositiveButton(R.string.ok, ((dialog1, which) -> {
+                languageManager.updateResource(Language.COUNTRY_CODE[languageClickedItem]);
                 dialog1.cancel();
                 recreate();
             }));
@@ -77,19 +81,26 @@ public class MainActivity extends AppCompatActivity {
             dialog.show();
             Configuration configuration = getResources().getConfiguration();
             String s = configuration.locale.toString().toLowerCase(Locale.ROOT);
-            for (int i = 0; i < Languages.TOTAL_LANGUAGES; i++) {
-                if (s.equals(Languages.COUNTRY_CODE[i].toLowerCase(Locale.ROOT)) || s.substring(0, 2).equals(Languages.COUNTRY_CODE[i])) {
-                    dialog.getListView().setItemChecked(i, true);
-                    break;
+            if (!s.equals("")) {
+                for (int i = 0; i < Language.TOTAL_LANGUAGES; i++) {
+                    if (s.equals(Language.COUNTRY_CODE[i].toLowerCase(Locale.ROOT)) || s.substring(0, 2).equals(Language.COUNTRY_CODE[i])) {
+                        dialog.getListView().setItemChecked(i, true);
+                        break;
+                    }
+                }
+            } else {
+                if (getString(R.string.app_name).equals("Solfege")) {
+                    dialog.getListView().setItemChecked(1, true);
+                } else {
+                    dialog.getListView().setItemChecked(0, true);
                 }
             }
-            dialog.getListView().setOnItemClickListener((parent, view, position, id) ->
-                    languageManager.updateResource(Languages.COUNTRY_CODE[position]));
+            dialog.getListView().setOnItemClickListener((parent, view, position, id) -> languageClickedItem = position);
         } else {
             LinearLayout layout = new LinearLayout(getBaseContext());
             layout.setOrientation(LinearLayout.VERTICAL);
             GradientDrawable drawable = new GradientDrawable();
-            drawable.setSize(1,50);
+            drawable.setSize(1, 50);
             layout.setDividerDrawable(drawable);
             layout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
             TextView version = new TextView(getBaseContext());
@@ -98,11 +109,11 @@ public class MainActivity extends AppCompatActivity {
             version.setText(R.string.version);
             version.setGravity(Gravity.CENTER);
             version.setTextSize(17);
-            github.setText(getClickableSpan(getString(R.string.githubPage),getString(R.string.githubUrl)));
+            github.setText(getClickableSpan(getString(R.string.githubPage), getString(R.string.githubUrl)));
             github.setMovementMethod(LinkMovementMethod.getInstance());
             github.setGravity(Gravity.CENTER);
             github.setTextSize(17);
-            gitee.setText(getClickableSpan(getString(R.string.giteePage),getString(R.string.giteeUrl)));
+            gitee.setText(getClickableSpan(getString(R.string.giteePage), getString(R.string.giteeUrl)));
             gitee.setMovementMethod(LinkMovementMethod.getInstance());
             gitee.setGravity(Gravity.CENTER);
             gitee.setTextSize(17);
@@ -113,10 +124,7 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle(R.string.about);
             builder.setView(layout);
-            builder.setPositiveButton(R.string.ok, ((dialog1, which) -> {
-                dialog1.cancel();
-                recreate();
-            }));
+            builder.setPositiveButton(R.string.ok, ((dialog1, which) -> dialog1.cancel()));
             AlertDialog dialog = builder.create();
             dialog.show();
         }

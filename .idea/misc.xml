@@ -20,7 +20,7 @@
         <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/dialog_date.xml" value="0.6" />
         <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/dialog_note_picker.xml" value="0.2" />
         <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/dialog_picker.xml" value="0.2" />
-        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/dialog_range_picker.xml" value="0.1" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/dialog_range_picker.xml" value="0.264" />
         <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/dialog_setting.xml" value="0.16" />
         <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/fragment_answer_dialog.xml" value="0.1" />
         <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/fragment_e_t_interval.xml" value="0.12708333333333333" />
@@ -32,6 +32,8 @@
         <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/timepicker_layout.xml" value="0.264" />
         <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/timepicker_line.xml" value="0.1" />
         <entry key="..\:/programming/Android/Solfege/app/src/main/res/layout/timepicker_toolbar.xml" value="0.4" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1969111969111969" />
+        <entry key="..\:/programming/Android/Solfege/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1969111969111969" />
       </map>
     </option>
   </component>

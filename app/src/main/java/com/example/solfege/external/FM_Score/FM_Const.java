@@ -8,16 +8,16 @@ import android.util.TypedValue;
 public class FM_Const {
     static final int DEFAULT_EXTRA_PADDING = 5;
     //notes
-    static final String _1Note = "\ue0a2";
-    static final String _2Note_up = "\ue1d3";
+    public static final String _1Note = "\ue0a2";
+    public static final String _2Note_up = "\ue1d3";
     static final String _2Note_down = "\ue1d4";
-    static final String _4Note_up = "\ue1D5";
+    public static final String _4Note_up = "\ue1D5";
     static final String _4Note_down = "\ue1d6";
-    static final String _8Note_up = "\ue1d7";
+    public static final String _8Note_up = "\ue1d7";
     static final String _8Note_down = "\ue1d8";
-    static final String _16Note_up = "\ue1d9";
+    public static final String _16Note_up = "\ue1d9";
     static final String _16Note_down = "\ue1da";
-    static final String _32Note_up = "\ue1db";
+    public static final String _32Note_up = "\ue1db";
     static final String _32Note_down = "\ue1dc";
     static final String FillNote = "\ue1af";
     static final String EmptyNote = "\ue1b0";
@@ -62,7 +62,7 @@ public class FM_Const {
     static final String TripleSharp = "\ue262 \ue263";
 
     static final String TripleFlat = "\ue266";
-    static final String Dot = "\ue1e7";
+    public static final String Dot = "\ue1e7";
 
     //pauses
     static final String Pause_1 = "\ue4e3";

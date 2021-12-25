@@ -2,10 +2,10 @@ package com.example.solfege.constants;
 
 public class TimeSignature {
     public static String[] LEFT_4 = {"2", "3", "4", "5", "7"};
-    public static String[] LEFT_8 = {"5", "6", "7", "9", "11"};
+    public static String[] LEFT_8 = {"5", "6", "7", "9"};
     public static String[] RIGHT = {"4", "8"};
     public static int[] LEFT_4_VALUE = {2, 3, 4, 5, 7};
-    public static int[] LEFT_8_VALUE = {5, 6, 7, 9, 11};
+    public static int[] LEFT_8_VALUE = {5, 6, 7, 9};
     public static int[] RIGHT_VALUE = {4, 8};
 
     public static int[] getTimeSignature(int[] timeSignature) {

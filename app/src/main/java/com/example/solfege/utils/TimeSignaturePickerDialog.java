@@ -18,7 +18,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.solfege.R;
 import com.example.solfege.adapters.MyWheelAdapter;
-import com.example.solfege.constants.Notes;
 import com.example.solfege.constants.TimeSignature;
 import com.example.solfege.external.wheelview.view.WheelView;
 import com.example.solfege.models.Settings;
@@ -26,11 +25,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 public class TimeSignaturePickerDialog extends DialogFragment {
-    private final List<String> notesList = Arrays.asList(Notes.NOTES_LIST);
     private BottomSheetBehavior<FrameLayout> behavior;
     private TextView setText;
     private Settings settings;
@@ -50,7 +46,7 @@ public class TimeSignaturePickerDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        BottomSheetDialog dialog = new BottomSheetDialog(Objects.requireNonNull(getContext()), R.style.SettingDialog);
+        BottomSheetDialog dialog = new BottomSheetDialog(requireContext(), R.style.SettingDialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);//Cannot drag
         return dialog;
     }

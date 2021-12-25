@@ -1,23 +1,22 @@
 package com.example.solfege.utils;
 
-import com.example.solfege.constants.Notes;
+import com.example.solfege.constants.Note;
 import com.example.solfege.external.FM_Score.FM_BarNote;
 import com.example.solfege.external.FM_Score.FM_BaseNote;
 import com.example.solfege.external.FM_Score.FM_ClefValue;
 import com.example.solfege.external.FM_Score.FM_Note;
 import com.example.solfege.external.FM_Score.FM_Score;
 import com.example.solfege.external.FM_Score.FM_ScoreBase;
-import com.example.solfege.models.Note;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Scores {
-    public static void setNotes(FM_Score s, Note[][] notes) {
+    public static void setNotes(FM_Score s, com.example.solfege.models.Note[][] notes) {
         boolean isBegin = false;
         int count = 0;
         int beams = 0;
-        for (Note[] items : notes) {
+        for (com.example.solfege.models.Note[] items : notes) {
             if (!isBegin) {
                 beams = items[0].getBeams();
                 if (beams > 0) {
@@ -51,23 +50,23 @@ public class Scores {
         }
     }
 
-    private static void addNotes(FM_Score s, Note[] items) {
+    private static void addNotes(FM_Score s, com.example.solfege.models.Note[] items) {
         if (items.length == 1) {
-            int noteValue = Notes.FM_NOTES[items[0].pitch % 12][0];
+            int noteValue = Note.FM_NOTES[items[0].pitch % 12][0];
             int octave = items[0].pitch / 12;
             int clefValue = (items[0].pitch > 47) ? FM_ClefValue.TREBLE : FM_ClefValue.BASS;
-            int accidental = Notes.FM_NOTES[items[0].pitch % 12][1];
+            int accidental = Note.FM_NOTES[items[0].pitch % 12][1];
             boolean isStemUp = (clefValue == FM_ClefValue.TREBLE) ? items[0].pitch <= 59 : items[0].pitch >= 42;
             FM_Note note = new FM_Note(s, noteValue, octave, clefValue, accidental, items[0].duration, 0, isStemUp);
             s.addStaveNote(note, clefValue);
         } else {
             List<Integer> clefs = new ArrayList<>();
             List<FM_BaseNote> chord = new ArrayList<>();
-            for (Note item : items) {
-                int noteValue = Notes.FM_NOTES[item.pitch % 12][0];
+            for (com.example.solfege.models.Note item : items) {
+                int noteValue = Note.FM_NOTES[item.pitch % 12][0];
                 int octave = item.pitch / 12;
                 int clefValue = (item.pitch > 47) ? FM_ClefValue.TREBLE : FM_ClefValue.BASS;
-                int accidental = Notes.FM_NOTES[item.pitch % 12][1];
+                int accidental = Note.FM_NOTES[item.pitch % 12][1];
                 boolean isStemUp = (clefValue == FM_ClefValue.TREBLE) ? items[0].pitch <= 59 : items[0].pitch >= 42;
                 FM_Note note = new FM_Note(s, noteValue, octave, clefValue, accidental, item.duration, 0, isStemUp);
                 clefs.add(clefValue);

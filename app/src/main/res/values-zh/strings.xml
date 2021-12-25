@@ -36,69 +36,7 @@
     <string name="sixteenthNote">十六分音符</string>
     <string name="sixteenthNoteDotted">十六分附点音符</string>
     <string name="thirtySecondNote">三十二分音符</string>
-    <!--题目-->
-    <string name="newQuestion">新题目</string>
-    <string name="playSample">播放样例</string>
-    <string name="replay">重播</string>
-    <string name="showInfo">显示信息</string>
-    <string name="hideInfo">隐藏信息</string>
-    <!--设置-->
-    <string name="setting">设置</string>
-    <string name="apply">应用</string>
-    <string name="durations">时值</string>
-    <string name="intervals">音程</string>
-    <string name="all">全部</string>
-    <string name="unselected">未选择</string>
-    <string name="playMode">播放模式</string>
-    <string name="ascending">递升</string>
-    <string name="descending">递降</string>
-    <string name="harmonic">同时</string>
-    <string name="random">随机</string>
-    <string name="noteRange">音符范围</string>
-    <string name="expertMode">专家模式</string>
-    <string name="answerNotesAlso">回答绝对音名</string>
-    <string name="noteVelocity">音符速度</string>
-    <string name="noteLength">音符长度</string>
-    <string name="bars">小节数</string>
-    <string name="oneBar">1小节</string>
-    <string name="twoBars">2小节</string>
-    <string name="number"> %1$d </string>
-    <string name="percent"> %1$d%% </string>
-    <string name="note"> %1$s </string>
-    <!--选择对话框-->
-    <string name="fromTo">从 %1$s 到 %2$s</string>
-    <string name="from">从</string>
-    <string name="to">到</string>
-    <string name="ok">确定</string>
-    <string name="chooseRange">选择范围</string>
-    <string name="chooseNote">选择音符</string>
-    <string name="chooseInterval">选择音程</string>
-    <string name="chooseDuration">选择时值</string>
-    <!--警告-->
-    <string name="invalidSelection">无效选择</string>
-    <string name="alertInfo">\“音符范围\”过小或含有空选项</string>
-    <!--答案-->
-    <string name="intervalIs">音程为：</string>
-    <string name="lowerNoteIs">较低音为：</string>
-    <string name="higherNoteIs">较高音为：</string>
-    <string name="intervalNoteInformation">较低音为：%1$s \n音程为：%2$s \n较高音为：%3$s </string>
-    <string name="submit">提交</string>
-    <string name="correct">正确!</string>
-    <string name="wrong">错误…</string>
-    <string name="correct_char">" ✓ "</string>
-    <string name="wrong_char">" ✕ 答案：%1$s"</string>
-    <!--菜单-->
-    <string name="language">语言</string>
-    <string name="English">English</string>
-    <string name="Chinese">中文</string>
-    <!--TODO-->
-    <string name="chords">和弦</string>
-    <string name="chooseTimeSignature">选择拍号</string>
-    <string name="timeSignature">拍号</string>
-    <string name="timeSignatureText">"%1$s / %2$s"</string>
-    <string name="answerDurations">请回答你所听到的时值</string>
-    <string name="play4_4Rhythm">"播放 4/4 节奏"</string>
-    <string name="chooseScale">选择音阶</string>
+    <!--音阶-->
     <string name="majorScale">大调音阶</string>
     <string name="minorScale">小调音阶</string>
     <string name="harmonicMajorScale">和声大调音阶</string>
@@ -114,11 +52,7 @@
     <string name="lydianScale">利底亚音阶</string>
     <string name="mixolydianScale">混合利底亚音阶</string>
     <string name="locrianScale">洛克尼亚音阶</string>
-    <string name="scaleNoteInformation">"%1$s %2$s"</string>
-    <string name="progressionInformation">"%1$s %2$s, 级数 %3$s"</string>
-    <string name="scaleIs">音阶为：</string>
-    <string name="answerRootNoteAlso">回答音阶根音</string>
-    <string name="scales">音阶</string>
+    <!--和弦-->
     <string name="majorChord">大三和弦</string>
     <string name="minorChord">小三和弦</string>
     <string name="augmentedChord">增三和弦</string>
@@ -143,21 +77,98 @@
     <string name="major13Chord">大十三和弦</string>
     <string name="minor13Chord">小十三和弦</string>
     <string name="_13Chord">属十三和弦</string>
-    <string name="chooseChord">选择和弦</string>
-    <string name="chordTypes">和弦类型</string>
-    <string name="chooseChordType">选择和弦类型</string>
+    <!--和弦类型-->
     <string name="thirdChords">三和弦</string>
     <string name="sixthChords">六和弦</string>
     <string name="seventhChords">七和弦</string>
     <string name="ninthChords">九和弦</string>
     <string name="eleventhChords">十一和弦</string>
     <string name="thirteenthChords">十三和弦</string>
-    <string name="chordIs">和弦为：</string>
+    <!--题目-->
+    <string name="newQuestion">新题目</string>
+    <string name="playSample">播放样例</string>
+    <string name="replay">重播</string>
+    <string name="showInfo">显示信息</string>
+    <string name="hideInfo">隐藏信息</string>
+    <string name="answerDurations">请回答你所听到的时值</string>
+    <string name="answerDurationsAndNotes">请回答你所听到的时值与音符</string>
+    <string name="play4_4OnC">"播放C音 4/4"</string>
+    <string name="playCentralC">播放C音</string>
+    <string name="ascendIt">递升</string>
+    <string name="playScale">播放音阶</string>
+    <!--设置-->
+    <string name="setting">设置</string>
+    <string name="apply">应用</string>
+    <string name="durations">时值</string>
+    <string name="intervals">音程</string>
+    <string name="scales">音阶</string>
+    <string name="chords">和弦</string>
+    <string name="chordTypes">和弦类型</string>
+    <string name="all">全部</string>
+    <string name="unselected">未选择</string>
+    <string name="playMode">播放模式</string>
+    <string name="ascending">递升</string>
+    <string name="descending">递降</string>
+    <string name="harmonic">同时</string>
+    <string name="random">随机</string>
+    <string name="noteRange">音符范围</string>
+    <string name="fromTo">从 %1$s 到 %2$s</string>
+    <string name="timeSignature">拍号</string>
+    <string name="timeSignatureText">"%1$s / %2$s"</string>
+    <string name="expertMode">专家模式</string>
+    <string name="answerNotesAlso">回答绝对音名</string>
+    <string name="answerScaleRootNoteAlso">回答音阶根音</string>
+    <string name="answerChordRootNoteAlso">回答和弦根音</string>
+    <string name="answerChordTypeAlso">回答和弦类型</string>
+    <string name="noteVelocity">音符速度</string>
+    <string name="noteLength">音符长度</string>
+    <string name="bars">小节数</string>
+    <string name="oneBar">1小节</string>
+    <string name="twoBars">2小节</string>
+    <string name="number"> %1$d </string>
+    <string name="percent"> %1$d%% </string>
+    <string name="note"> %1$s </string>
+    <!--选择对话框-->
+    <string name="from">从</string>
+    <string name="to">到</string>
+    <string name="ok">确定</string>
+    <string name="chooseRange">选择范围</string>
+    <string name="chooseTimeSignature">选择拍号</string>
+    <string name="chooseDuration">选择时值</string>
+    <string name="chooseNote">选择音符</string>
+    <string name="chooseInterval">选择音程</string>
+    <string name="chooseScale">选择音阶</string>
+    <string name="chooseChord">选择和弦</string>
+    <string name="chooseChordType">选择和弦类型</string>
+    <string name="chooseDegree">选择音级</string>
+    <!--警告-->
+    <string name="invalidSelection">无效选择</string>
+    <string name="alertInfo">可能的原因：\n1. “时值”可能无效\n2. “音符范围”过小\n3. 含有空选项</string>
+    <!--答案-->
+    <string name="durationIs">时值为：</string>
+    <string name="noteIs">音符为：</string>
+    <string name="intervalIs">音程为：</string>
+    <string name="lowerNoteIs">较低音为：</string>
+    <string name="higherNoteIs">较高音为：</string>
     <string name="rootNoteIs">根音为：</string>
+    <string name="scaleIs">音阶为：</string>
+    <string name="chordIs">和弦为：</string>
+    <string name="degreeIs">音级为：</string>
+    <string name="intervalNoteInformation">较低音为：%1$s \n音程为：%2$s \n较高音为：%3$s </string>
+    <string name="scaleNoteInformation">"%1$s %2$s"</string>
+    <string name="progressionInformation">"%1$s %2$s, 级数 %3$s"</string>
+    <string name="submit">提交</string>
+    <string name="correct">正确!</string>
+    <string name="wrong">错误…</string>
+    <string name="wrong_char">" %1$s"</string>
+    <!--菜单-->
+    <string name="language">语言</string>
+    <string name="English">English</string>
+    <string name="Chinese">中文</string>
     <string name="about">关于</string>
-    <string name="version">版本：1.0</string>
+    <string name="version">版本1.0</string>
     <string name="githubPage">GitHub项目页</string>
     <string name="giteePage">Gitee项目页</string>
-    <string name="githubUrl">https://github.com/cubic759/lllLRC-Maker</string>
-    <string name="giteeUrl">https://github.com/cubic759/lllLRC-Maker</string>
+    <string name="githubUrl">https://github.com/cubic759/Solfege</string>
+    <string name="giteeUrl">https://gitee.com/cubic759/Solfege</string>
 </resources>

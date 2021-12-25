@@ -16,4 +16,5 @@
 
     <color name="wrong">#F45A5A</color>
     <color name="right">#82F1AB</color>
+    <color name="empty">#FFDC28</color>
 </resources>

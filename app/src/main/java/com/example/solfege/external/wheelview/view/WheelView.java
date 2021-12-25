@@ -1,6 +1,8 @@
 package com.example.solfege.external.wheelview.view;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -17,6 +19,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.solfege.R;
+import com.example.solfege.SettingFragment;
 import com.example.solfege.external.wheelview.adapter.WheelAdapter;
 import com.example.solfege.external.wheelview.interfaces.IPickerViewData;
 import com.example.solfege.external.wheelview.listener.LoopViewGestureListener;
@@ -124,6 +127,7 @@ public class WheelView extends View {
     private float CENTER_CONTENT_OFFSET;//偏移量
 
     private boolean isAlphaGradient = false; //透明度渐变
+    private int widthType;//宽度
 
     public WheelView(Context context) {
         this(context, null);
@@ -156,6 +160,7 @@ public class WheelView extends View {
             dividerWidth = a.getDimensionPixelSize(R.styleable.pickerview_wheelview_dividerWidth, 2);
             textSize = a.getDimensionPixelOffset(R.styleable.pickerview_wheelview_textSize, textSize);
             lineSpacingMultiplier = a.getFloat(R.styleable.pickerview_wheelview_lineSpacingMultiplier, lineSpacingMultiplier);
+            widthType = a.getInt(R.styleable.pickerview_wheelView_width_type, 0);
             a.recycle();//回收内存
         }
 
@@ -221,7 +226,11 @@ public class WheelView extends View {
         //求出半径
         radius = (int) (halfCircumference / Math.PI);
         //控件宽度，这里支持weight
-        measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
+        if (widthType == 0) {
+            measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
+        } else {
+            measuredWidth = 800;
+        }
         //计算两条横线 和 选中项画笔的基线Y位置
         firstLineY = (measuredHeight - itemHeight) / 2.0F;
         secondLineY = (measuredHeight + itemHeight) / 2.0F;
@@ -545,6 +554,10 @@ public class WheelView extends View {
             }
             counter++;
         }
+    }
+
+    public void setMeasuredWidth(int measuredWidth) {
+        this.measuredWidth = measuredWidth;
     }
 
     //设置文字倾斜角度，透明度

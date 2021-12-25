@@ -3,7 +3,7 @@ package com.example.solfege.constants;
 import com.example.solfege.external.FM_Score.FM_Accidental;
 import com.example.solfege.external.FM_Score.FM_NoteValue;
 
-public class Notes {
+public class Note {
     public static final int NOTES_LIST_LENGTH = 88;
     public static final int[][] FM_NOTES = {
             {FM_NoteValue.DO, FM_Accidental.None}, {FM_NoteValue.DO, FM_Accidental.Sharp},

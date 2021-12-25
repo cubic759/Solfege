@@ -46,6 +46,10 @@ public class DoingTestActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onBackPressed();
+        UIControls uiControls = settingDialog.getUiControls();
+        if (uiControls != null) {
+            uiControls.destroyDialogs();
+        }
         return true;
     }
 

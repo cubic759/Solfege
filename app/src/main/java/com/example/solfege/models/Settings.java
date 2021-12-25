@@ -1,7 +1,10 @@
 package com.example.solfege.models;
 
-import com.example.solfege.constants.Intervals;
+import com.example.solfege.constants.Chord;
+import com.example.solfege.constants.Duration;
+import com.example.solfege.constants.Interval;
 import com.example.solfege.constants.Mode;
+import com.example.solfege.constants.Scale;
 import com.example.solfege.constants.Type;
 
 import java.util.ArrayList;
@@ -112,10 +115,6 @@ public class Settings {
         return noteRange;
     }
 
-    public int[] getNoteRangeTemp() {
-        return noteRangeTemp;
-    }
-
     public void setNoteRangeTemp(int[] noteRangeTemp) {
         this.noteRangeTemp = noteRangeTemp;
     }
@@ -130,28 +129,41 @@ public class Settings {
 
     public boolean isValid() {
         boolean result = true;
+        boolean noteRangeResult = true;
         if (testMode == Mode.SIGHT_SINGING) {
             switch (testType) {
                 case RHYTHM:
                     result = ((SSRhythmSettings) settings).isValid();
                     break;
                 case INTERVAL:
-                    result = ((SSIntervalSettings) settings).isValid(noteRangeTemp);
+                    SSIntervalSettings intervalSettings = (SSIntervalSettings) settings;
+                    result = intervalSettings.isValid();
+                    noteRangeResult = intervalSettings.isNoteRangeValid(noteRangeTemp);
                     break;
                 case SCALE:
-                    result = ((SSScaleSettings) settings).isValid(noteRangeTemp);
+                    SSScaleSettings scaleSettings = (SSScaleSettings) settings;
+                    result = scaleSettings.isValid();
+                    noteRangeResult = scaleSettings.isNoteRangeValid(noteRangeTemp);
                     break;
                 case ARPEGGIO:
-                    result = ((SSArpeggioSettings) settings).isValid(noteRangeTemp);
+                    SSArpeggioSettings arpeggioSettings = (SSArpeggioSettings) settings;
+                    result = arpeggioSettings.isValid();
+                    noteRangeResult = arpeggioSettings.isNoteRangeValid(noteRangeTemp);
                     break;
                 case MELODY:
-                    result = ((SSMelodySettings) settings).isValid(noteRangeTemp);
+                    SSMelodySettings melodySettings = (SSMelodySettings) settings;
+                    result = melodySettings.isValid();
+                    noteRangeResult = melodySettings.isNoteRangeValid(noteRangeTemp);
                     break;
                 case CHORD:
-                    result = ((SSChordSettings) settings).isValid(noteRangeTemp);
+                    SSChordSettings chordSettings = (SSChordSettings) settings;
+                    result = chordSettings.isValid();
+                    noteRangeResult = chordSettings.isNoteRangeValid(noteRangeTemp);
                     break;
                 case PROGRESSION:
-                    result = ((SSProgressionSettings) settings).isValid(noteRangeTemp);
+                    SSProgressionSettings progressionSettings = (SSProgressionSettings) settings;
+                    result = progressionSettings.isValid();
+                    noteRangeResult = progressionSettings.isNoteRangeValid(noteRangeTemp);
                     break;
             }
         } else {
@@ -160,33 +172,53 @@ public class Settings {
                     result = ((ETRhythmSettings) settings).isValid();
                     break;
                 case INTERVAL:
-                    result = ((ETIntervalSettings) settings).isValid(noteRangeTemp);
+                    ETIntervalSettings intervalSettings = (ETIntervalSettings) settings;
+                    result = intervalSettings.isValid();
+                    noteRangeResult = intervalSettings.isNoteRangeValid(noteRangeTemp);
                     break;
                 case SCALE:
-                    result = ((ETScaleSettings) settings).isValid(noteRangeTemp);
+                    ETScaleSettings scaleSettings = (ETScaleSettings) settings;
+                    result = scaleSettings.isValid();
+                    noteRangeResult = scaleSettings.isNoteRangeValid(noteRangeTemp);
                     break;
                 case ARPEGGIO:
-                    result = ((ETArpeggioSettings) settings).isValid(noteRangeTemp);
+                    ETArpeggioSettings arpeggioSettings = (ETArpeggioSettings) settings;
+                    result = arpeggioSettings.isValid();
+                    noteRangeResult = arpeggioSettings.isNoteRangeValid(noteRangeTemp);
                     break;
                 case MELODY:
-                    result = ((ETMelodySettings) settings).isValid(noteRangeTemp);
+                    ETMelodySettings melodySettings = (ETMelodySettings) settings;
+                    result = melodySettings.isValid();
+                    noteRangeResult = melodySettings.isNoteRangeValid(noteRangeTemp);
                     break;
                 case CHORD:
-                    result = ((ETChordSettings) settings).isValid(noteRangeTemp);
+                    ETChordSettings chordSettings = (ETChordSettings) settings;
+                    result = chordSettings.isValid();
+                    noteRangeResult = chordSettings.isNoteRangeValid(noteRangeTemp);
                     break;
                 case PROGRESSION:
-                    result = ((ETProgressionSettings) settings).isValid(noteRangeTemp);
+                    ETProgressionSettings progressionSettings = (ETProgressionSettings) settings;
+                    result = progressionSettings.isValid();
+                    noteRangeResult = progressionSettings.isNoteRangeValid(noteRangeTemp);
                     break;
             }
         }
-        return result;
+        if (noteRangeResult) {
+            noteRange = noteRangeTemp;
+        }
+        return noteRangeResult && result;
     }
 }
 
 class SSRhythmSettings {
-    private ArrayList<Integer> durations = new ArrayList<>();
+    private ArrayList<Integer> durations;
     private boolean emptyDurations;
+    private ArrayList<Integer> tempDurations;
     private int bars = 1;
+
+    public void setTempDurations(ArrayList<Integer> tempDurations) {
+        this.tempDurations = tempDurations;
+    }
 
     public ArrayList<Integer> getDurations() {
         return durations;
@@ -194,10 +226,6 @@ class SSRhythmSettings {
 
     public boolean isEmptyDurations() {
         return emptyDurations;
-    }
-
-    public void setDurations(ArrayList<Integer> durations) {
-        this.durations = durations;
     }
 
     public void setEmptyDurations(boolean emptyDurations) {
@@ -213,12 +241,22 @@ class SSRhythmSettings {
     }
 
     public boolean isValid() {
-        return !emptyDurations;
+        if (emptyDurations || tempDurations == null) {
+            emptyDurations = false;
+            return false;
+        } else {
+            if (Duration.isDurationsValid(tempDurations)) {
+                durations = tempDurations;
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }
 
 class SSIntervalSettings {
-    private List<Integer> intervals = new ArrayList<>();
+    private List<Integer> intervals;
     private boolean emptyIntervals;
     private int playMode = 0;
 
@@ -246,24 +284,24 @@ class SSIntervalSettings {
         this.playMode = playMode;
     }
 
-    public boolean isValid(int[] noteRange) {
+    public boolean isNoteRangeValid(int[] noteRange) {
+        return noteRange[0] - noteRange[1] >= intervals.get(intervals.size() - 1);
+    }
+
+    public boolean isValid() {
         if (intervals == null || emptyIntervals) {
             emptyIntervals = false;
             return false;
         } else {
-            return noteRange[0] - noteRange[1] >= intervals.get(intervals.size() - 1);
+            return true;
         }
     }
 }
 
 class SSScaleSettings {
-    private List<Integer> scales = new ArrayList<>();
+    private List<Integer> scales;
     private boolean emptyScales;
     private int playMode;
-
-    public boolean isEmptyScales() {
-        return emptyScales;
-    }
 
     public void setEmptyScales(boolean emptyScales) {
         this.emptyScales = emptyScales;
@@ -285,18 +323,22 @@ class SSScaleSettings {
         this.playMode = playMode;
     }
 
-    public boolean isValid(int[] noteRange) {
+    public boolean isNoteRangeValid(int[] noteRange) {
+        return noteRange[0] - noteRange[1] >= Interval.OCTAVE.ordinal();
+    }
+
+    public boolean isValid() {
         if (scales == null || emptyScales) {
             emptyScales = false;
             return false;
         } else {
-            return noteRange[0] - noteRange[1] >= Intervals.OCTAVE.ordinal();
+            return true;
         }
     }
 }
 
 class SSArpeggioSettings {
-    private ArrayList<Integer> chords = new ArrayList<>();
+    private ArrayList<Integer> chords;
     private boolean emptyChords;
     private int playMode;
 
@@ -316,25 +358,35 @@ class SSArpeggioSettings {
         this.chords = chords;
     }
 
-    public boolean isEmptyChords() {
-        return emptyChords;
-    }
-
     public void setEmptyChords(boolean emptyChords) {
         this.emptyChords = emptyChords;
     }
 
-    public boolean isValid(int[] noteRange) {
-        return true;
+    public boolean isNoteRangeValid(int[] noteRange) {
+        return noteRange[0] - noteRange[1] >= (int) (Interval.OCTAVE.ordinal() * 2.5);
+    }
+
+    public boolean isValid() {
+        if (chords == null || emptyChords) {
+            emptyChords = false;
+            return false;
+        } else {
+            return true;
+        }
     }
 }
 
 class SSMelodySettings {
-    private ArrayList<Integer> scales = new ArrayList<>();
+    private ArrayList<Integer> scales;
     private boolean emptyScales;
-    private ArrayList<Integer> durations = new ArrayList<>();
+    private ArrayList<Integer> durations;
+    private ArrayList<Integer> tempDurations;
     private boolean emptyDurations;
     private int bars = 1;
+
+    public void setTempDurations(ArrayList<Integer> tempDurations) {
+        this.tempDurations = tempDurations;
+    }
 
     public ArrayList<Integer> getScales() {
         return scales;
@@ -360,10 +412,6 @@ class SSMelodySettings {
         return emptyDurations;
     }
 
-    public void setDurations(ArrayList<Integer> durations) {
-        this.durations = durations;
-    }
-
     public void setEmptyDurations(boolean emptyDurations) {
         this.emptyDurations = emptyDurations;
     }
@@ -376,18 +424,28 @@ class SSMelodySettings {
         this.bars = bars;
     }
 
-    public boolean isValid(int[] noteRange) {
+    public boolean isNoteRangeValid(int[] noteRange) {
+        return noteRange[0] - noteRange[1] >= Interval.OCTAVE.ordinal();
+    }
+
+    public boolean isValid() {
         if (scales == null || emptyScales || emptyDurations) {
             emptyScales = false;
+            emptyDurations = false;
             return false;
         } else {
-            return noteRange[0] - noteRange[1] >= 12;
+            if (Duration.isDurationsValid(tempDurations)) {
+                durations = tempDurations;
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }
 
 class SSChordSettings {
-    private ArrayList<Integer> chords = new ArrayList<>();
+    private ArrayList<Integer> chords;
     private boolean emptyChords;
 
     public ArrayList<Integer> getChords() {
@@ -398,16 +456,21 @@ class SSChordSettings {
         this.chords = chords;
     }
 
-    public boolean isEmptyChords() {
-        return emptyChords;
-    }
-
     public void setEmptyChords(boolean emptyChords) {
         this.emptyChords = emptyChords;
     }
 
-    public boolean isValid(int[] noteRange) {
-        return true;
+    public boolean isNoteRangeValid(int[] noteRange) {
+        return noteRange[0] - noteRange[1] >= Chord.getMaxInterval(chords);
+    }
+
+    public boolean isValid() {
+        if (chords == null || emptyChords) {
+            emptyChords = false;
+            return false;
+        } else {
+            return true;
+        }
     }
 }
 
@@ -429,16 +492,8 @@ class SSProgressionSettings {
         this.scales = scales;
     }
 
-    public boolean isEmptyScales() {
-        return emptyScales;
-    }
-
     public void setEmptyChordTypes(boolean emptyChordType) {
         this.emptyChordTypes = emptyChordType;
-    }
-
-    public boolean isEmptyChordTypes() {
-        return emptyChordTypes;
     }
 
     public ArrayList<Integer> getChordTypes() {
@@ -449,15 +504,30 @@ class SSProgressionSettings {
         this.chordTypes = chordType;
     }
 
-    public boolean isValid(int[] noteRange) {
-        return true;
+    public boolean isNoteRangeValid(int[] noteRange) {
+        return noteRange[0] - noteRange[1] >= Scale.getMaxInterval(scales, chordTypes);
+    }
+
+    public boolean isValid() {
+        if (chordTypes == null || emptyChordTypes || scales == null || emptyScales) {
+            emptyScales = false;
+            emptyChordTypes = false;
+            return false;
+        } else {
+            return true;
+        }
     }
 }
 
 class ETRhythmSettings {
-    private ArrayList<Integer> durations = new ArrayList<>();
+    private ArrayList<Integer> durations;
+    private ArrayList<Integer> tempDurations;
     private boolean emptyDurations;
     private int bars = 1;
+
+    public void setTempDurations(ArrayList<Integer> tempDurations) {
+        this.tempDurations = tempDurations;
+    }
 
     public ArrayList<Integer> getDurations() {
         return durations;
@@ -471,10 +541,6 @@ class ETRhythmSettings {
         this.emptyDurations = emptyDurations;
     }
 
-    public void setDurations(ArrayList<Integer> durations) {
-        this.durations = durations;
-    }
-
     public int getBars() {
         return bars;
     }
@@ -484,12 +550,22 @@ class ETRhythmSettings {
     }
 
     public boolean isValid() {
-        return true;
+        if (emptyDurations || tempDurations == null) {
+            emptyDurations = false;
+            return false;
+        } else {
+            if (Duration.isDurationsValid(tempDurations)) {
+                durations = tempDurations;
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }
 
 class ETIntervalSettings {
-    private List<Integer> intervals = new ArrayList<>();
+    private List<Integer> intervals;
     private boolean emptyIntervals;
     private int playMode = 0;
     private boolean isExpertMode;
@@ -526,25 +602,25 @@ class ETIntervalSettings {
         isExpertMode = expertMode;
     }
 
-    public boolean isValid(int[] noteRange) {
+    public boolean isNoteRangeValid(int[] noteRange) {
+        return noteRange[0] - noteRange[1] >= intervals.get(intervals.size() - 1);
+    }
+
+    public boolean isValid() {
         if (intervals == null || emptyIntervals) {
             emptyIntervals = false;
             return false;
         } else {
-            return noteRange[0] - noteRange[1] >= intervals.get(intervals.size() - 1);
+            return true;
         }
     }
 }
 
 class ETScaleSettings {
-    private List<Integer> scales = new ArrayList<>();
+    private List<Integer> scales;
     private int playMode;
     private boolean isExpertMode;
     private boolean emptyScales;
-
-    public boolean isEmptyScales() {
-        return emptyScales;
-    }
 
     public void setEmptyScales(boolean emptyScales) {
         this.emptyScales = emptyScales;
@@ -574,18 +650,22 @@ class ETScaleSettings {
         this.playMode = playMode;
     }
 
-    public boolean isValid(int[] noteRange) {
+    public boolean isNoteRangeValid(int[] noteRange) {
+        return noteRange[0] - noteRange[1] >= Interval.OCTAVE.ordinal();
+    }
+
+    public boolean isValid() {
         if (scales == null || emptyScales) {
             emptyScales = false;
             return false;
         } else {
-            return noteRange[0] - noteRange[1] >= Intervals.OCTAVE.ordinal();
+            return true;
         }
     }
 }
 
 class ETArpeggioSettings {
-    private ArrayList<Integer> chords = new ArrayList<>();
+    private ArrayList<Integer> chords;
     private boolean emptyChords;
     private int playMode;
     private boolean isExpertMode;
@@ -614,31 +694,41 @@ class ETArpeggioSettings {
         this.chords = chords;
     }
 
-    public boolean isEmptyChords() {
-        return emptyChords;
-    }
-
     public void setEmptyChords(boolean emptyChords) {
         this.emptyChords = emptyChords;
     }
 
-    public boolean isValid(int[] noteRange) {
-        return true;
+    public boolean isNoteRangeValid(int[] noteRange) {
+        return noteRange[0] - noteRange[1] >= (int) (Interval.OCTAVE.ordinal() * 2.5);
+    }
+
+    public boolean isValid() {
+        if (emptyChords || chords == null) {
+            emptyChords = false;
+            return false;
+        } else {
+            return true;
+        }
     }
 }
 
 class ETMelodySettings {
-    private List<Integer> scales = new ArrayList<>();
+    private ArrayList<Integer> scales;
     private boolean emptyScales;
-    private ArrayList<Integer> durations = new ArrayList<>();
+    private ArrayList<Integer> durations;
+    private ArrayList<Integer> tempDurations;
     private boolean emptyDurations;
     private int bars = 1;
 
-    public List<Integer> getScales() {
+    public void setTempDurations(ArrayList<Integer> tempDurations) {
+        this.tempDurations = tempDurations;
+    }
+
+    public ArrayList<Integer> getScales() {
         return scales;
     }
 
-    public void setScales(List<Integer> scales) {
+    public void setScales(ArrayList<Integer> scales) {
         this.scales = scales;
     }
 
@@ -658,10 +748,6 @@ class ETMelodySettings {
         return emptyDurations;
     }
 
-    public void setDurations(ArrayList<Integer> durations) {
-        this.durations = durations;
-    }
-
     public void setEmptyDurations(boolean emptyDurations) {
         this.emptyDurations = emptyDurations;
     }
@@ -674,19 +760,38 @@ class ETMelodySettings {
         this.bars = bars;
     }
 
-    public boolean isValid(int[] noteRange) {
+    public boolean isNoteRangeValid(int[] noteRange) {
+        return noteRange[0] - noteRange[1] >= Interval.OCTAVE.ordinal();
+    }
+
+    public boolean isValid() {
         if (scales == null || emptyScales || emptyDurations) {
             emptyScales = false;
+            emptyDurations = false;
             return false;
         } else {
-            return noteRange[0] - noteRange[1] >= 12;
+            if (Duration.isDurationsValid(tempDurations)) {
+                durations = tempDurations;
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 }
 
 class ETChordSettings {
-    private ArrayList<Integer> chords = new ArrayList<>();
+    private ArrayList<Integer> chords;
     private boolean emptyChords;
+    private boolean isExpertMode;
+
+    public boolean isExpertMode() {
+        return isExpertMode;
+    }
+
+    public void setExpertMode(boolean expertMode) {
+        isExpertMode = expertMode;
+    }
 
     public ArrayList<Integer> getChords() {
         return chords;
@@ -696,16 +801,21 @@ class ETChordSettings {
         this.chords = chords;
     }
 
-    public boolean isEmptyChords() {
-        return emptyChords;
-    }
-
     public void setEmptyChords(boolean emptyChords) {
         this.emptyChords = emptyChords;
     }
 
-    public boolean isValid(int[] noteRange) {
-        return true;
+    public boolean isNoteRangeValid(int[] noteRange) {
+        return noteRange[0] - noteRange[1] >= Chord.getMaxInterval(chords);
+    }
+
+    public boolean isValid() {
+        if (emptyChords || chords == null) {
+            emptyChords = false;
+            return false;
+        } else {
+            return true;
+        }
     }
 }
 
@@ -714,6 +824,15 @@ class ETProgressionSettings {
     boolean emptyChordTypes;
     private ArrayList<Integer> scales;
     boolean emptyScales;
+    boolean isExpertMode;
+
+    public boolean isExpertMode() {
+        return isExpertMode;
+    }
+
+    public void setExpertMode(boolean expertMode) {
+        isExpertMode = expertMode;
+    }
 
     public void setScales(ArrayList<Integer> scales) {
         this.scales = scales;
@@ -727,16 +846,8 @@ class ETProgressionSettings {
         return scales;
     }
 
-    public boolean isEmptyScales() {
-        return emptyScales;
-    }
-
     public void setEmptyChordTypes(boolean emptyChordType) {
         this.emptyChordTypes = emptyChordType;
-    }
-
-    public boolean isEmptyChordTypes() {
-        return emptyChordTypes;
     }
 
     public ArrayList<Integer> getChordTypes() {
@@ -747,7 +858,17 @@ class ETProgressionSettings {
         this.chordTypes = chordType;
     }
 
-    public boolean isValid(int[] noteRange) {
-        return true;
+    public boolean isNoteRangeValid(int[] noteRange) {
+        return noteRange[0] - noteRange[1] >= Scale.getMaxInterval(scales, chordTypes);
+    }
+
+    public boolean isValid() {
+        if (emptyChordTypes || emptyScales || chordTypes == null || scales == null) {
+            emptyScales = false;
+            emptyChordTypes = false;
+            return false;
+        } else {
+            return true;
+        }
     }
 }
