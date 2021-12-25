@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -74,12 +73,10 @@ public class SettingDialogFragment extends BottomSheetDialogFragment {
         viewPager.setAdapter(contentAdapter);
         TabLayout tabLayout = settingDialogView.findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.addOnTabSelectedListener(new OnTabSelectedListenerAdapter(SSFragment, ETFragment) {
-        });//To set nestScrolling
+        tabLayout.addOnTabSelectedListener(new OnTabSelectedListenerAdapter(SSFragment, ETFragment));//To set nestScrolling
 
         Button applyBtn = settingDialogView.findViewById(R.id.applyBtn);
         applyBtn.setOnClickListener(v -> {
-
             testMode = Mode.values()[tabLayout.getSelectedTabPosition()];
             savedSettings[0] = SSFragment.getSettings();
             savedSettings[1] = ETFragment.getSettings();

@@ -107,10 +107,6 @@ public class Settings {
         return settings;
     }
 
-    public void setNoteRange(int[] noteRange) {
-        this.noteRange = noteRange;
-    }
-
     public int[] getNoteRange() {
         return noteRange;
     }
