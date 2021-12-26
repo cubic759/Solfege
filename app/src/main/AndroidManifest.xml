@@ -6,7 +6,7 @@
     <application
         android:allowBackup="true"
         android:fullBackupOnly="true"
-        android:icon="@mipmap/solfege"
+        android:icon="@mipmap/icon"
         android:roundIcon="@mipmap/icon_rounded"
         android:label="@string/app_name"
         android:supportsRtl="true"
