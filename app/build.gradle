@@ -3,6 +3,14 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        sign {
+            storeFile file('C:\\Users\\12657\\sign.jks')
+            storePassword '130618'
+            keyAlias 'cubic759'
+            keyPassword '130618'
+        }
+    }
     compileSdk 31
 
     defaultConfig {
@@ -41,6 +49,5 @@ dependencies {
     //Rounded Image View
     implementation 'com.makeramen:roundedimageview:2.3.0'
 
-    implementation 'com.github.billthefarmer:mididriver:v1.24'
     implementation 'com.github.abcghy:FlowRadioGroup:0.1'
 }
